@@ -1,5 +1,6 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
+
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -7,33 +8,35 @@ export default function Contact() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
 
-  function send(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus("Sending...");
+function send(e: React.FormEvent) {
+  e.preventDefault();
+  setStatus("Sending...");
 
-    emailjs
-      .send(
-        "service_oxjby7f",
-        "onGSVe1c9frJr3lK7",
-        {
-          name,
-          email,
-          message,
-        },
-        "onGSVe1c9frJr3lK7"
-      )
-      .then(
-        () => {
-          setStatus("Message sent successfully ✅");
-          setName("");
-          setEmail("");
-          setMessage("");
-        },
-        () => {
-          setStatus("Failed ❌ Please try again");
-        }
-      );
-  }
+  emailjs
+    .send(
+      "service_oxjby7f",
+      "template_7yngtkh",
+      {
+        name,
+        email,
+        message,
+      },
+      "onGSVe1c9frJr3lK7"
+    )
+    .then(
+      () => {
+        setStatus("Message sent successfully ✅");
+        setName("");
+        setEmail("");
+        setMessage("");
+      },
+      (error) => {
+        console.error("EmailJS Error:", error);
+        setStatus("Failed ❌ Check configuration");
+      }
+    );
+}
+
 
   return (
     <section id="contact" className="flex items-center justify-center px-6">
